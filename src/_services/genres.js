@@ -1,4 +1,4 @@
-import API from "../_api";
+import {API} from "../_api";
 
 export const getGenres = async () => {
 
@@ -16,3 +16,33 @@ export const createGenre = async(data) => {
     throw error;
   }
 }
+
+
+export const showGenres = async (id) => {
+  try {
+    const { data } = await API.get(`/genres/${id}`);
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateGenres = async (id, data) => {
+  try {
+    const response = await API.post(`/genres/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const deleteGenres = async (id) => {
+  try {
+    await API.delete(`/genres/${id}`);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
