@@ -1,24 +1,45 @@
 import { useEffect, useState } from "react";
 import { showBook } from "../../../_services/books";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ImageBookStorage } from "../../../_api";
+import { createTransaction } from "../../../_services/transaction";
 
 export default function ShowBook() {
+  const { id } = useParams();
+  const [book, setBooks] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const accesToken = localStorage.getItem("accesToken");
+  const navigate = useNavigate();
 
-  const {id} = useParams()
-  const[book,setBooks] = useState({
-
-  })
-
-  useEffect(()=>{
-    const fetchData = async ()=> {
-      const [bookData] = await Promise.all([
-        showBook(id)
-      ])
+  useEffect(() => {
+    const fetchData = async () => {
+      const [bookData] = await Promise.all([showBook(id)]);
       setBooks(bookData);
+    };
+    fetchData();
+  }, [id]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!accesToken) {
+      navigate("/login");
     }
-    fetchData()
-  }, [id])
+
+    try {
+      const payload = {
+        book_id: id,
+        quantity: quantity,
+      };
+
+      await createTransaction(payload);
+      alert("pembelian berhasil!");
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   return (
     <>
       <section className="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
@@ -117,31 +138,35 @@ export default function ShowBook() {
               </div>
 
               <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                <a
-                  href="#"
-                  title=""
-                  class="text-black mt-4 sm:mt-0 bg-sky-500 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
-                  role="button"
+                <form
+                  action=""
+                  onSubmit={handleSubmit}
+                  className="mt-6 sm:mt-8 space-y-4"
                 >
-                  <svg
-                    class="w-5 h-5 -ms-2 me-2"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                  <div>
+                    <label
+                      htmlFor="quantity"
+                      className="block text-sm font-medium text-gray-600 "
                     />
-                  </svg>
-                  Add to cart
-                </a>
+                    Jumlah
+                    <input
+                      type="number"
+                      id="quantity"
+                      name="quantity"
+                      value={quantity}
+                      min={1}
+                      onChange={(e) => setQuantity(e.target.value)}
+                      className="mt-1 block w-24 px-3 py-2 border border-gray-300 rounded-md shadown-sm dark:bg-gray-600 focus:outline-none 
+                    focus:ring-indigo-400 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    class="text-black mt-4 sm:mt-0 bg-sky-500 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+                  >
+                    Buy
+                  </button>
+                </form>
               </div>
 
               <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
@@ -149,8 +174,6 @@ export default function ShowBook() {
               <p class="mb-6 text-gray-500 dark:text-gray-400">
                 {book.description}
               </p>
-
-              
             </div>
           </div>
         </div>
