@@ -36,7 +36,7 @@ export default function Login() {
       localStorage.setItem("accesToken", response.token);
       localStorage.setItem("userInfo", JSON.stringify(response.user));
 
-      return navigate(response.user.role === "admin" ? "/admin" : "/");
+      return navigate(response.user.role === "admin" ? "/admin/dashboard" : "/");
     } catch (error) {
       setError(error?.response?.data?.message);
     } finally {
@@ -46,7 +46,7 @@ export default function Login() {
 
   useEffect(() => {
     if (token && decodeData && decodeData.success) {
-      navigate( "/admin" )
+      navigate( "/admin/dashboard" )
     }
   }, [token, decodeData, navigate]);
   console.log(decodeData);

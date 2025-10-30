@@ -17,6 +17,9 @@ import BookEdit from "./pages/admin/books/edit"
 import ShowBook from "./pages/public/books/show"
 import AuthorEdit from "./pages/admin/authors/edit"
 import GenreEdit from "./pages/admin/genres/edit"
+import AdminTransaction from "./pages/admin/transactions"
+import AdminUser from "./pages/admin/users"
+import Profile from "./pages/public/profiles"
 
 function App() {
 
@@ -27,6 +30,7 @@ function App() {
         {/* public */}
         <Route element={<PublicLayout />}>
         <Route index element={<Home/>}/>
+        <Route path="profile" element={<Profile />}/>
         <Route path="books">
           <Route index element={<Books />}/>
 
@@ -41,7 +45,19 @@ function App() {
 
         {/* admin */}
         <Route path="admin" element={<AdminLayout/>}>
-        <Route index element={<Dashboard/>}/>
+        <Route path="dashboard" element={<Dashboard/>}/>
+
+
+        {/* transactions */}
+        <Route path="transactions">
+        <Route index element={<AdminTransaction/>} /> 
+        </Route>
+
+
+        {/* Users */}
+        <Route path="users">
+        <Route index element={<AdminUser/>} /> 
+        </Route>
 
         {/* books */}
         <Route path="books">

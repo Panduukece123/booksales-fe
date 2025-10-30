@@ -104,7 +104,7 @@ export default function AdminLayout() {
               </button>
 
                 <Link
-                to={"/"}
+                to={"/profile"}
                 className=" bg-gray-200 hover:bg-gray-400 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-indigo-600 "
               >
                 {userInfo.name}
@@ -168,7 +168,7 @@ export default function AdminLayout() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  to={""}
+                  to={"/"}
                   className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
                   <svg
@@ -181,7 +181,7 @@ export default function AdminLayout() {
                     <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                     <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                   </svg>
-                  <span className="ml-3">Overview</span>
+                  <span className="ml-3">Dashboard Customer</span>
                 </Link>
               </li>
               <li>
